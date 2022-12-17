@@ -1,0 +1,151 @@
+@startuml
+
+Title Diagrama de clases Ejercicio Cabinas Peajes.
+
+package domain{
+
+	class Concesion {
+		- estaciones: List<Estacion>
+
+		+ addEstacion()
+		+ cabinasConEfectivo()
+		+ promedioDemora()
+		+ cobrar(vehiculo, estacion, cabina)
+	}
+	note left of Concesion::cabinasConEfectivo
+		llama al método estacion.cabinasConEfectivo()
+	end note
+	note left of Concesion::promedioDemora
+		llama al método estacion.promedioDemora()
+	end note
+
+	class Estacion {
+		- id: Integer
+		- nombre: String
+		- cabinas: List<Cabina>
+
+		+ dameHoraActual()
+		+ addCabina(medioPago)
+		+ cabinasConEfectivo()
+		+ promedioDemora()
+		+ cobrar(vehiculo, cabina)
+	}
+	note left of Estacion::cabinasConEfectivo
+		recorre las cabinas y se queda con las que
+		tiene medio de pago efectivo (usar instanceof)
+	end note
+	note left of Estacion::promedioDemora
+		recorre las cabinas y por cada una
+		calcula cabina.diasDemora()
+	end note
+	note left of Estacion::cobrar
+		cabina.cobrar(vehiculo, dameHoraActual()
+	end note
+
+
+	class Cabina {
+		- id: Integer
+		- medioDePago: MedioDePago
+		- registros: List<Registro>
+
+		+ cobrar(vehiculo, horaActual)
+		- crearRegistro(Vehiculo, horaActual())
+		+ addRegistro(Vehiculo, horaActual())
+		+ diasDemora()
+	}
+	note left of Cabina::diasDemora
+		medioDePago.diasDemora() solo si
+		es SUBE o PASE
+	end note
+
+	class Registro {
+		- hora: Integer
+		- vehiculo: Vehiculo
+		- montoPagado: double
+
+	}
+
+
+
+	abstract class MedioDePago {
+		- descripcion: Strings
+		- diasDemora: Integer
+
+		+ {abstract} descuento() : Double
+	}
+
+	class Sube {
+		- diasDemora
+
+		+ descuento()
+	}
+	note bottom of Sube
+		diasDemora es defindo por el usuario o random ()
+
+		descuento() retorna 10%
+	end note
+
+	class Pase {
+		diasDemora
+
+		descuento()
+	}
+	note bottom of Pase
+		diasDemora es defindo por el usuario o random ()
+
+		descuento() retorna 15.0% si diasDemora es < 5 días
+		o 12.0% si diasDemora es >= 5 días
+	end note
+
+	class Efectivo {
+		diasDemora
+
+		descuento()
+	}
+	note bottom of Efectivo
+		diasDemora es 0
+
+		descuento() retorna 0%
+	end note
+
+	class Vehiculo {
+		patente: String
+		categoria: CategoriaVehiculo
+
+		getPrecio(): Double
+	}
+
+	enum CategoriaVehiculo {
+		- precio: Double
+
+		+ AUTO [100]
+		+ MOTO [50]
+		+ CAMION [500]
+
+		- CategoriaVehiculo(precio)
+		+ getPrecio()
+	}
+
+	Concesion -- Estacion
+	Estacion -- Cabina
+	Cabina -- MedioDePago
+	MedioDePago <|-- Sube
+	MedioDePago <|-- Pase
+	MedioDePago <|-- Efectivo
+
+
+	Registro -- Cabina
+	Registro -- Vehiculo
+
+	Vehiculo -- CategoriaVehiculo
+}
+
+package test {
+	class ConcesionTest {
+		main()
+	}
+
+	ConcesionTest .. Concesion
+}
+
+@enduml

@@ -1,0 +1,41 @@
+@startmindmap
+
+* Concesion
+** Estación Peaje (1..n)
+*** Identificador
+*** Nombre
+*** Cabina Peaje (1..n)
+**** Identificador
+**** Medio de Pago \n(una cabina posee solo un medio de pago asignado)
+***** SUBE
+****** Dias de demora de cobro
+****** Aplica un descuesto del 10%
+***** PASE
+****** Dias de demora de cobro
+****** Aplica un descuesto del 15% \nsi la demora de cobro es menor a 5 días
+****** Aplica un descuesto del 12% \nsi la demora de cobro es mayor o igual a 5 días
+***** Efectivo
+****** Aplica un descuesto de 0%
+******* No aplica descuento por el momento
+******* En el futuro puede hacerlo
+***** Descripcion
+**** Registro de Cobro
+***** Vehiculo
+****** Patente (8 dígitos)
+****** Categoría
+******* Auto
+******* Moto
+******* Camión
+******* Monto a cobrar (por categoría)
+***** Tarifa por horario
+****** Entre las 06 a 10 o 17 a 20 es hora pico
+******* Se incrementa el "Monto a cobrar (por categoría)" en un 8%
+***** Medio de Pago
+****** Aplica un descuesto
+***** Calculo del monto final
+****** (Monto a cobrar (por categoría) + Incremento por horario) - Descuento por medio de pago
+*** Posee un método dameHoraActual() que\n devuelve la hora al momento\n de la invocación
+**** Manejar las horas como enteros (0 .. 23)
+
+
+@endmindmap

@@ -1,0 +1,51 @@
+@startuml
+
+Title Diagrama de Secuencia Método Cobrar
+
+participant ":Estacion" as C
+participant ":Cabina" as Cab
+participant ":Registro" as Reg
+participant ":Vehiculo" as Veh
+participant ":MedioDePago" as MdP
+
+C -> Cab : cobrar(vehiculo, horaActual)
+activate Cab
+
+Cab -> Cab : crearRegistro(vehiculo, cabina, horaActual)
+activate Cab
+
+Cab -> Reg : new Registro(vehiculo, cabina, horaActual)
+activate Reg
+
+Cab <-- Reg : elRegistro
+deactivate Reg
+deactivate Cab
+
+Cab -> Cab : addRegistro(elRegistro)
+activate Cab
+deactivate Cab
+
+Cab -> Veh :  elRegistro.getVehiculo.getCategoria.getPrecio()
+activate Veh
+
+Cab <-- Veh : elPrecioPeaje
+deactivate Veh
+
+Cab -> Cab : elIncremento = calcularIncremento(horaActual).\nRetorna 0% o 8% si es hora pico
+activate Cab
+deactivate Cab
+
+Cab -> MdP : obtenerDescuento()
+activate MdP
+
+Cab <-- MdP: elDescuento
+deactivate MdP
+
+Cab -> Cab : montoACobrar = calcularMontoACobrar(elPrecioPeaje, elIncremento, elDescuento)
+activate Cab
+deactivate Cab
+
+C <-- Cab : montoACobrar
+deactivate Cab
+
+@enduml

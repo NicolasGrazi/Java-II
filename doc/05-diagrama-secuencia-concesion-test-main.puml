@@ -1,0 +1,32 @@
+@startuml
+
+Title Diagrama de Secuencia de ConcesionTest método main()
+
+actor Usuario as U
+participant ConcesionTest as CT
+participant Concesion as C
+participant Estacion as E
+participant Cabina as Cab
+participant MedioDePago as MdP
+participant Vehiculo as Veh
+participant CategoriaVehiculo as CtV
+
+U -> CT : main()
+CT -> C : concesion = new Concesion()
+CT -> C : consecion.addEstacion()
+C -> E : estacion = new Estacion()
+C -> C : estaciones.add(estacion)
+CT -> MdP : medioDePago = new MedioDePago() (es una herencia)
+CT -> C : concesion.addCabina(estacion, medioDePago)
+C -> E : estacion.addCabina(medioDePago)
+E -> Cab : cabina = new Cabina(medioDePago)
+E -> E : cabinas.add(cabina)
+CT -> CtV : categoria = CategoriaVehiculo.AUTO
+CT -> Veh : auto = new Vehiculo("patente", categoria)
+CT -> C : cobrar(auto, estacion, cabina)
+C -> E : cobrar(auto, cabina)
+E -> E : horaActual = dameHoraActual()
+E -> Cab : cobrar(auto, horaActual)
+CT -> CT : seguir con otros casos .....
+
+@enduml
